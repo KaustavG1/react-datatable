@@ -1,0 +1,18 @@
+.data-grid-wrapper {
+  height: 500px;
+  width: 800px;
+}
+
+@media only screen and (max-width: 600px) {
+  .data-grid-wrapper {
+    width: 500px;
+    height: 400px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .data-grid-wrapper {
+    width: 300px;
+    height: 400px;
+  }
+}

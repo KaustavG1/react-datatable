@@ -1,0 +1,46 @@
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  min-height: 200px;
+  background-color: #ffffff;
+  z-index: 1000;
+  outline: 1px solid #646cff;
+  border-radius: 8px;
+}
+
+/* These define css for the content */
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px;
+}
+
+.modal-content h2 {
+  margin: 0px;
+}
+
+.modal-content p {
+  color: red;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px 0px;
+}

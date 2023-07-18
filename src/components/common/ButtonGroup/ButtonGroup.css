@@ -1,0 +1,8 @@
+.button-group {
+  display: flex;
+  margin-top: 5px;
+}
+
+.button-group button:last-child {
+  margin-right: 3px;
+}
