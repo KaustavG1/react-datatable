@@ -15,25 +15,35 @@ function DataGrid({ openEditModal, rowData, deleteRow }) {
         <DataGridButtons
           openEditModal={openEditModal}
           deleteRow={deleteRow}
-          {...props} />
+          {...props}
+        />
       )
     },
-    { field: "id", filter: true },
-    { field: "name", filter: true },
-    { field: "age", filter: true }
+    { field: "country", filter: true },
+    { field: "athlete", filter: true },
+    { field: "age", filter: true },
+    { field: "year", filter: true },
+    { field: "date", filter: true },
+    { field: "sport", filter: true },
+    { field: "gold", filter: true },
+    { field: "silver", filter: true },
+    { field: "bronze", filter: true },
+    { field: "total", filter: true }
   ]
 
-  const onFirstDataRendered = useCallback((params) => {
+  const onFirstDataRendered = useCallback(() => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
   return (
-    <div className="ag-theme-alpine data-grid-wrapper">
+    <div className="ag-theme-alpine-dark data-grid-wrapper">
       <AgGridReact
         ref={gridRef}
         rowData={rowData}
+        paginationPageSize={50}
         columnDefs={columnDefs}
         onFirstDataRendered={onFirstDataRendered}
+        pagination={true}
       />
     </div>
   )

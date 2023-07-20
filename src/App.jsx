@@ -1,56 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DataGrid from './components/DataGrid/DataGrid'
 import Button from './components/common/Button/Button'
 import Modal from './components/common/Modal/Modal'
+import { v4 as uuidv4 } from 'uuid';
 import './App.css'
+import getDate from './utils/getDate';
 
-const initData = [
-  { id: 1, name: "John Doe", age: 25 },
-  { id: 2, name: "Jane Smith", age: 30 },
-  { id: 3, name: "Mike Johnson", age: 35 }
-]
+const initData = []
 
 function App() {
   const [isOpen, setOpen] = useState(false)
   const [mode, setMode] = useState("add")
-  const [currId, setCurrId] = useState(initData.length + 1)
   const [defaultData, setDefaultData] = useState({})
-
   const [rowData, setRowData] = useState(initData)
 
-  const setNextId = () => setCurrId(id => id + 1)
+  useEffect(() => {
+    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
+      .then(result => result.json())
+      .then(data => data.map((el) => ({ id: uuidv4(), ...el })))
+      .then(rowData => {
+        setRowData(rowData)
+      })
+  }, []);
 
   const openEditModal = (data = {}) => {
     setMode("edit")
-    setDefaultData(data)
+    const date = getDate(data?.date)
+    setDefaultData({ ...data, date: date })
     setOpen(true)
   }
 
   const openAddModal = () => {
     setMode("add")
+    setDefaultData({})
     setOpen(true)
   }
 
   const closeEditModal = () => setOpen(false)
 
-  // Move add and edit and delete functions to utils
-
-  const addRecord = (name, age) => {
+  const addRecord = (values) => {
     setRowData(
       [
+        { id: uuidv4(), ...values },
         ...rowData,
-        { id: currId, name, age }
       ]
     )
   }
 
-  const updateRow = (id, name, age) => {
+  const updateRow = (values) => {
     setRowData(rowData.map((record) => {
-      if (record?.id === id) {
+      if (record?.id === values?.id) {
         return {
           ...record,
-          name,
-          age
+          ...values
         }
       }
 
@@ -75,11 +77,8 @@ function App() {
         close={closeEditModal}
         addRecord={addRecord}
         updateRow={updateRow}
-        setNextID={setNextId}
         mode={mode}
-        defaultId={defaultData?.id}
-        defaultName={defaultData?.name}
-        defaultAge={defaultData?.age}
+        defaultValues={defaultData}
         setDefaultData={setDefaultData}
       />}
     </>

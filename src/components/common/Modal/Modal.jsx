@@ -1,26 +1,38 @@
-import { useState } from "react"
 import ReactDOM from "react-dom"
 import ButtonGroup from "../ButtonGroup/ButtonGroup"
 import validateForm from "../../../utils/validation"
+import useModalForm from "../../../hooks/useModalForm"
 import "./Modal.css"
 
-/* TODO: Make modal generic to handle both edit and submit */
+/* Generic modal to handle both edit and submit */
 
 function Modal({
   close,
-  header,
-  defaultName,
-  defaultAge,
-  defaultId,
+  defaultValues,
   addRecord,
-  setNextID,
   mode,
   updateRow,
   setDefaultData
 }) {
-  const [name, setName] = useState(defaultName)
-  const [age, setAge] = useState(defaultAge)
-  const [errorField, setErrorField] = useState("")
+  const [
+    values,
+    handleChange,
+    errorField,
+    setErrorField
+  ] = useModalForm(defaultValues)
+
+  const {
+    athlete,
+    age,
+    country,
+    year,
+    date,
+    sport,
+    gold,
+    silver,
+    bronze,
+    total,
+  } = values
 
   const getHeader = () => {
     if (mode === "add") {
@@ -31,34 +43,25 @@ function Modal({
   }
 
   const handleSubmit = () => {
-    /* Form Data Validation - Move validation code to utils */
-    const error = validateForm(name, age)
+    /* Form Data Validation - Add date validation */
+    const error = validateForm(values)
     if (error) {
       setErrorField(error)
       return null
     }
 
-    /* TODO: Add new record on submit to the datagrid */
-    setNextID()
+    /* Change date format to dd/mm/yyyy */
+    const newValues = { ...values, date: new Date(values?.date).toLocaleString().split(',')[0] }
+
+    /* Add new record on submit to the datagrid */
     if (mode === "add") {
-      addRecord(name, Number(age))
+      addRecord(newValues)
     } else {
-      updateRow(defaultId, name, Number(age))
+      updateRow(newValues)
     }
 
     setDefaultData({})
-
     close()
-  }
-
-  const handleNameChange = (event) => {
-    setErrorField("")
-    setName(event.target.value)
-  }
-
-  const handleAgeChange = (event) => {
-    setErrorField("")
-    setAge(event.target.value)
   }
 
   return ReactDOM.createPortal(
@@ -69,10 +72,35 @@ function Modal({
           <h2>{getHeader()}</h2>
           {errorField && <p>{errorField}</p>}
           <div className="modal-form">
-            <label htmlFor="name">Name: </label>
-            <input id="name" value={name} type="text" onChange={handleNameChange} required />
+            <label htmlFor="athlete">Athlete: </label>
+            <input id="athlete" value={athlete} type="text" onChange={(e) => handleChange("athlete", e)} required />
+
             <label htmlFor="age">Age: </label>
-            <input id="age" value={age} type="number" onChange={handleAgeChange} min="1" max="110" required />
+            <input id="age" value={age} type="number" onChange={(e) => handleChange("age", e)} min="1" max="110" required />
+
+            <label htmlFor="country">Country: </label>
+            <input id="country" value={country} type="text" onChange={(e) => handleChange("country", e)} required />
+
+            <label htmlFor="year">Year: </label>
+            <input id="year" value={year} type="number" onChange={(e) => handleChange("year", e)} min="1900" max="2100" required />
+
+            <label htmlFor="date">Date: </label>
+            <input id="date" value={date} type="date" onChange={(e) => handleChange("date", e)} required />
+
+            <label htmlFor="sport">Sport: </label>
+            <input id="sport" value={sport} type="text" onChange={(e) => handleChange("sport", e)} required />
+
+            <label htmlFor="gold">Gold: </label>
+            <input id="gold" value={gold} type="number" onChange={(e) => handleChange("gold", e)} required />
+
+            <label htmlFor="silver">Silver: </label>
+            <input id="silver" value={silver} type="number" onChange={(e) => handleChange("silver", e)} required />
+
+            <label htmlFor="bronze">Bronze: </label>
+            <input id="bronze" value={bronze} type="number" onChange={(e) => handleChange("bronze", e)} required />
+
+            <label htmlFor="total">Total: </label>
+            <input id="total" value={total} type="number" onChange={(e) => handleChange("total", e)} required />
           </div>
           <ButtonGroup buttonOneLabel="Cancel" buttonTwoLabel="Submit" buttonOneHandler={close} buttonTwoHandler={handleSubmit} />
         </div>
@@ -83,9 +111,7 @@ function Modal({
 }
 
 Modal.defaultProps = {
-  defaultId: "",
-  defaultName: "",
-  defaultAge: ""
+  defaultValues: {}
 }
 
 export default Modal

@@ -1,12 +1,27 @@
 .data-grid-wrapper {
-  height: 500px;
-  width: 800px;
+  height: 700px;
+  width: 1700px;
 }
+
+@media only screen and (max-width: 1500px) {
+  .data-grid-wrapper {
+    width: 1200px;
+    height: 650px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .data-grid-wrapper {
+    width: 800px;
+    height: 650px;
+  }
+}
+
 
 @media only screen and (max-width: 600px) {
   .data-grid-wrapper {
     width: 500px;
-    height: 400px;
+    height: 500px;
   }
 }
 

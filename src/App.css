@@ -1,6 +1,9 @@
 h1 {
   text-align: center;
   font-size: 5em;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  color: #fff
 }
 
 .container {
