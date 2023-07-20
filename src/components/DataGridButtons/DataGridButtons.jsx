@@ -1,6 +1,9 @@
 import ButtonGroup from "../common/ButtonGroup/ButtonGroup";
 
 function DataGridButtons({ data, openEditModal, deleteRow }) {
+  if (!data) {
+    return null
+  }
 
   /* Handlers for edit and delete buttons */
   const editRecord = () => {

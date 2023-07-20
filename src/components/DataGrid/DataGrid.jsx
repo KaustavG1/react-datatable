@@ -1,8 +1,9 @@
-import { useRef, useCallback } from "react"
+import { useRef } from "react"
 import { AgGridReact } from "ag-grid-react"
 import DataGridButtons from "../DataGridButtons/DataGridButtons"
-import "ag-grid-community/styles/ag-grid.css"
-import "ag-grid-community/styles/ag-theme-alpine.css"
+import 'ag-grid-enterprise'
+import "ag-grid-community/dist/styles/ag-grid.css"
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css"
 import "./DataGrid.css"
 
 function DataGrid({ openEditModal, rowData, deleteRow }) {
@@ -11,16 +12,15 @@ function DataGrid({ openEditModal, rowData, deleteRow }) {
   const columnDefs = [
     {
       field: "",
-      cellRenderer: (props) => (
-        <DataGridButtons
-          openEditModal={openEditModal}
+      cellRendererFramework: (params) => (
+        <DataGridButtons openEditModal={openEditModal}
           deleteRow={deleteRow}
-          {...props}
+          {...params}
         />
       )
     },
-    { field: "country", filter: true },
-    { field: "athlete", filter: true },
+    { field: "country", filter: true, rowGroup: true, hide: true },
+    { field: "athlete", filter: true, rowGroup: true, hide: true },
     { field: "age", filter: true },
     { field: "year", filter: true },
     { field: "date", filter: true },
@@ -31,10 +31,6 @@ function DataGrid({ openEditModal, rowData, deleteRow }) {
     { field: "total", filter: true }
   ]
 
-  const onFirstDataRendered = useCallback(() => {
-    gridRef.current.api.sizeColumnsToFit();
-  }, []);
-
   return (
     <div className="ag-theme-alpine-dark data-grid-wrapper">
       <AgGridReact
@@ -42,7 +38,6 @@ function DataGrid({ openEditModal, rowData, deleteRow }) {
         rowData={rowData}
         paginationPageSize={50}
         columnDefs={columnDefs}
-        onFirstDataRendered={onFirstDataRendered}
         pagination={true}
       />
     </div>

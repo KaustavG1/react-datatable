@@ -31,7 +31,6 @@ function Modal({
     gold,
     silver,
     bronze,
-    total,
   } = values
 
   const getHeader = () => {
@@ -98,9 +97,6 @@ function Modal({
 
             <label htmlFor="bronze">Bronze: </label>
             <input id="bronze" value={bronze} type="number" onChange={(e) => handleChange("bronze", e)} required />
-
-            <label htmlFor="total">Total: </label>
-            <input id="total" value={total} type="number" onChange={(e) => handleChange("total", e)} required />
           </div>
           <ButtonGroup buttonOneLabel="Cancel" buttonTwoLabel="Submit" buttonOneHandler={close} buttonTwoHandler={handleSubmit} />
         </div>

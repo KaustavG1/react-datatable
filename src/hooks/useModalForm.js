@@ -35,11 +35,12 @@ function useModalForm(defaultValues = {}) {
       case "bronze":
         setValues(val => ({ ...val, bronze: Number(event.target.value) }))
         break;
-      case "total":
-        setValues(val => ({ ...val, total: Number(event.target.value) }))
+      default:
         break;
     }
   }
+
+  values["total"] = values.gold + values.silver + values.bronze
 
   return [values, handleChange, errorField, setErrorField]
 }
